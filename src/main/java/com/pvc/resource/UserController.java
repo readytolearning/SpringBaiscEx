@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("rest")
 public class UserController {
@@ -30,7 +32,7 @@ public class UserController {
 	}
 
 	@PostMapping("user")
-	public ResponseEntity<String> createUser(@RequestBody User user) {
+	public ResponseEntity<User> createUser(@RequestBody User user) {
 		String response = null;
 		HttpStatus httpStatus = null;
 		if(user.getId() == 0){
@@ -40,7 +42,13 @@ public class UserController {
 			response = SUCCESS;
 			httpStatus = HttpStatus.OK;
 		}
-		return new ResponseEntity<String>(response, httpStatus);
+		return new ResponseEntity<User>(user, httpStatus);
+	}
+
+	@GetMapping("users")
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.getAllUsers();
+		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 	
 
